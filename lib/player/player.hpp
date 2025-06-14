@@ -14,21 +14,22 @@ typedef struct Player
     Texture2D player_boost_texture;
     float player_boost_texture_X;
     float player_boost_texture_Y;
+    float player_boost_rotation;
 } Player;
 
 Player CreatePlayer()
 {
     Player player;
     player.player_texture = LoadTexture("assets/player/player_texture.png");
-    player.player_position_X = ((GetScreenWidth() / 2.0f) - (player.player_texture.width / 2.0f));
-    player.player_position_Y = ((GetScreenHeight() / 2.0f) - (player.player_texture.height / 2.0f));
-    player.player_rotation = 0.0f;
-    player.speed = 2.5f;
-    player.health = 100;
-
     player.player_boost_texture = LoadTexture("assets/player/player_boost_texture.png");
-    player.player_boost_texture_X = player.player_position_X + 50;
-    player.player_boost_texture_Y = player.player_position_Y + 85;
+
+    // Inicializa a posição central da nave na tela
+    player.player_position_X = (GetScreenWidth()  - player.player_texture.width)  * 0.5f;
+    player.player_position_Y = (GetScreenHeight() - player.player_texture.height) * 0.5f;
+
+    player.player_rotation = 0.0f;
+    player.speed          = 2.5f;
+    player.health         = 100;
 
     return player;
 }

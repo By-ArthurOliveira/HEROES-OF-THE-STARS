@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "app_controllers.hpp"
 #include "app_imported_assets.hpp"
+#include "math.h"
 
 #include <stdio.h>
 
@@ -72,10 +73,46 @@ void DrawMainMenu(Texture2D main_menu_background, Sound switch_sound)
     }
 }
 
-void DrawGameplay(Texture2D gameplay_background, Player player)
+void DrawGameplay(Texture2D gameplay_background, Player &player)
 {
+    // Desenha fundo
     DrawTexture(gameplay_background, 0, 0, GRAY);
-    DrawTextureEx(player.player_texture, {player.player_position_X, player.player_position_Y}, player.player_rotation, 1.0, WHITE);
+
+    // Calcula centro da nave na tela
+    float shipW = (float)player.player_texture.width;
+    float shipH = (float)player.player_texture.height;
+    Vector2 shipCenter = { player.player_position_X + shipW*0.5f,
+                           player.player_position_Y + shipH*0.5f };
+
+    // Offset do boost em relação ao centro da nave (atrás): vetor apontando para baixo no sistema local
+    Vector2 localBoostOffset = { 0.0f, shipH*0.5f + 10.0f };
+
+    // Converte ângulo para radianos e rotaciona o offset
+    float rad = player.player_rotation * DEG2RAD;
+    Vector2 worldOffset = { localBoostOffset.x * cosf(rad) - localBoostOffset.y * sinf(rad),
+                             localBoostOffset.x * sinf(rad) + localBoostOffset.y * cosf(rad) };
+
+    // Posição do centro do boost no mundo
+    Vector2 boostCenter = { shipCenter.x + worldOffset.x,
+                             shipCenter.y + worldOffset.y };
+
+    // Desenha nave com DrawTexturePro para usar o centro como origem de rotação
+    Rectangle srcShip = { 0.0f, 0.0f, shipW, shipH };
+    Rectangle dstShip = { shipCenter.x, shipCenter.y, shipW, shipH };
+    Vector2 originShip = { shipW*0.5f, shipH*0.5f };
+    
+    // Desenha boost com mesma rotação e origem centrada
+    float boostW = (float)player.player_boost_texture.width;
+    float boostH = (float)player.player_boost_texture.height;
+    
+    Rectangle srcBoost = { 0.0f, 0.0f, boostW, boostH };
+    Rectangle dstBoost = { boostCenter.x, boostCenter.y, boostW, boostH };
+    Vector2 originBoost = { boostW*0.5f, boostH*0.5f };
+        if (IsKeyDown(KEY_LEFT_SHIFT) && !pause_app)
+                {
+                    DrawTexturePro(player.player_boost_texture, srcBoost, dstBoost, originBoost, player.player_rotation, WHITE);
+                }
+    DrawTexturePro(player.player_texture, srcShip, dstShip, originShip, player.player_rotation, WHITE);
 }
 
 void DrawScoreboard(Texture2D main_menu_background)

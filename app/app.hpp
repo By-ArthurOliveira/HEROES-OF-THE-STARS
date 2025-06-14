@@ -75,14 +75,13 @@ int InitializeApp()
                 {
                     player.player_position_X += player.speed;
                 }
-                if (IsKeyDown(KEY_E))
-                {
-                    player.player_rotation += 0.75;
-                }
-                if (IsKeyDown(KEY_Q))
-                {
-                    player.player_rotation -= 0.75;
-                }
+    // Dentro do Update loop:
+// No update loop:
+if (IsKeyDown(KEY_E)) player.player_rotation += 0.75f;
+if (IsKeyDown(KEY_Q)) player.player_rotation -= 0.75f;
+
+// Ao final do loop de Update, chama a função de desenho:
+DrawGameplay(app_assets.gameplay_background, player);
 
                 if (IsKeyDown(KEY_LEFT_SHIFT))
                 {
@@ -99,7 +98,7 @@ int InitializeApp()
 
                 if (IsKeyDown(KEY_LEFT_SHIFT))
                 {
-                    DrawTexture(player.player_boost_texture, player.player_boost_texture_X, player.player_boost_texture_Y, WHITE);
+                   // DrawTexturePro(player.player_boost_texture, srcBoost, dstBoost, originBoost, player.player_rotation, WHITE);
                 }
             }
             else
