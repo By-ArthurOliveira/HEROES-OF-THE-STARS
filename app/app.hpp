@@ -5,9 +5,6 @@
 
 int InitializeApp()
 {
-    int screen_width = 1366;
-    int screen_height = 768;
-
     SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_TOPMOST);
     SetTargetFPS(144);
     InitWindow(screen_width, screen_height, "HEROES OF THE STARS");
@@ -17,6 +14,7 @@ int InitializeApp()
 
     AppAssets app_assets = CreateAppAssets();
     Player player = CreatePlayer();
+    Asteroid asteroid = CreateAsteroids(asteroid_type = GetRandomValue(0, 3));
 
     while (!stop_app)
     {
@@ -75,13 +73,14 @@ int InitializeApp()
                 {
                     player.player_position_X += player.speed;
                 }
-    // Dentro do Update loop:
-// No update loop:
-if (IsKeyDown(KEY_E)) player.player_rotation += 0.75f;
-if (IsKeyDown(KEY_Q)) player.player_rotation -= 0.75f;
+                // Dentro do Update loop:
+                // No update loop:
+                if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
+                    player.player_rotation += 1.25f;
+                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+                    player.player_rotation -= 1.25f;
 
-// Ao final do loop de Update, chama a função de desenho:
-DrawGameplay(app_assets.gameplay_background, player);
+                // Ao final do loop de Update, chama a função de desenho:
 
                 if (IsKeyDown(KEY_LEFT_SHIFT))
                 {
@@ -94,16 +93,11 @@ DrawGameplay(app_assets.gameplay_background, player);
                     player.speed = 2.5;
                 }
 
-                DrawGameplay(app_assets.gameplay_background, player);
-
-                if (IsKeyDown(KEY_LEFT_SHIFT))
-                {
-                   // DrawTexturePro(player.player_boost_texture, srcBoost, dstBoost, originBoost, player.player_rotation, WHITE);
-                }
+                DrawGameplay(app_assets.gameplay_background, player, asteroid);
             }
             else
             {
-                DrawGameplay(app_assets.gameplay_background, player);
+                DrawGameplay(app_assets.gameplay_background, player, asteroid);
 
                 DrawText("JOGO PAUSADO", 75, 400, 25, GOLD);
                 DrawText("PRESSIONE ESC PARA CONTINUAR!", 75, 450, 25, GOLD);

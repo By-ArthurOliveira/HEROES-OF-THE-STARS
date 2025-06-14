@@ -1,7 +1,6 @@
 #include "raylib.h"
 #include "app_controllers.hpp"
 #include "app_imported_assets.hpp"
-#include "math.h"
 
 #include <stdio.h>
 
@@ -73,46 +72,48 @@ void DrawMainMenu(Texture2D main_menu_background, Sound switch_sound)
     }
 }
 
-void DrawGameplay(Texture2D gameplay_background, Player &player)
+void DrawGameplay(Texture2D gameplay_background, Player player, Asteroid asteroid)
 {
-    // Desenha fundo
-    DrawTexture(gameplay_background, 0, 0, GRAY);
-
     // Calcula centro da nave na tela
-    float shipW = (float)player.player_texture.width;
-    float shipH = (float)player.player_texture.height;
-    Vector2 shipCenter = { player.player_position_X + shipW*0.5f,
-                           player.player_position_Y + shipH*0.5f };
+    float ship_widht = (float)player.player_texture.width;
+    float ship_height = (float)player.player_texture.height;
+    Vector2 ship_center = {player.player_position_X + ship_widht * 0.5f,
+                           player.player_position_Y + ship_height * 0.5f};
 
     // Offset do boost em relação ao centro da nave (atrás): vetor apontando para baixo no sistema local
-    Vector2 localBoostOffset = { 0.0f, shipH*0.5f + 10.0f };
+    Vector2 local_boost_offset = {0.0f, ship_height * 0.5f + 10.0f};
 
     // Converte ângulo para radianos e rotaciona o offset
     float rad = player.player_rotation * DEG2RAD;
-    Vector2 worldOffset = { localBoostOffset.x * cosf(rad) - localBoostOffset.y * sinf(rad),
-                             localBoostOffset.x * sinf(rad) + localBoostOffset.y * cosf(rad) };
+    Vector2 world_offset = {local_boost_offset.x * cosf(rad) - local_boost_offset.y * sinf(rad),
+                            local_boost_offset.x * sinf(rad) + local_boost_offset.y * cosf(rad)};
 
     // Posição do centro do boost no mundo
-    Vector2 boostCenter = { shipCenter.x + worldOffset.x,
-                             shipCenter.y + worldOffset.y };
+    Vector2 boost_center = {ship_center.x + world_offset.x,
+                            ship_center.y + world_offset.y};
 
     // Desenha nave com DrawTexturePro para usar o centro como origem de rotação
-    Rectangle srcShip = { 0.0f, 0.0f, shipW, shipH };
-    Rectangle dstShip = { shipCenter.x, shipCenter.y, shipW, shipH };
-    Vector2 originShip = { shipW*0.5f, shipH*0.5f };
-    
+    Rectangle src_ship = {0.0f, 0.0f, ship_widht, ship_height};
+    Rectangle dst_ship = {ship_center.x, ship_center.y, ship_widht, ship_height};
+    Vector2 origin_ship = {ship_widht * 0.5f, ship_height * 0.5f};
+
     // Desenha boost com mesma rotação e origem centrada
-    float boostW = (float)player.player_boost_texture.width;
-    float boostH = (float)player.player_boost_texture.height;
-    
-    Rectangle srcBoost = { 0.0f, 0.0f, boostW, boostH };
-    Rectangle dstBoost = { boostCenter.x, boostCenter.y, boostW, boostH };
-    Vector2 originBoost = { boostW*0.5f, boostH*0.5f };
-        if (IsKeyDown(KEY_LEFT_SHIFT) && !pause_app)
-                {
-                    DrawTexturePro(player.player_boost_texture, srcBoost, dstBoost, originBoost, player.player_rotation, WHITE);
-                }
-    DrawTexturePro(player.player_texture, srcShip, dstShip, originShip, player.player_rotation, WHITE);
+    float boost_widht = (float)player.player_boost_texture.width;
+    float boost_height = (float)player.player_boost_texture.height;
+
+    Rectangle src_boost = {0.0f, 0.0f, boost_widht, boost_height};
+    Rectangle dst_boost = {boost_center.x, boost_center.y, boost_widht, boost_height};
+    Vector2 origin_boost = {boost_widht * 0.5f, boost_height * 0.5f};
+
+    DrawTexture(gameplay_background, 0, 0, GRAY);
+
+    if (IsKeyDown(KEY_LEFT_SHIFT) && !pause_app)
+    {
+        DrawTexturePro(player.player_boost_texture, src_boost, dst_boost, origin_boost, player.player_rotation, WHITE);
+    }
+
+    DrawTextureEx(asteroid.asteroid_texture, {asteroid.asteroid_position_X, asteroid.asteroid_position_Y}, asteroid.asteroid_rotation, 1.0, WHITE);
+    DrawTexturePro(player.player_texture, src_ship, dst_ship, origin_ship, player.player_rotation, WHITE);
 }
 
 void DrawScoreboard(Texture2D main_menu_background)

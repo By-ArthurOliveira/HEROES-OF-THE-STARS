@@ -23,13 +23,12 @@ Player CreatePlayer()
     player.player_texture = LoadTexture("assets/player/player_texture.png");
     player.player_boost_texture = LoadTexture("assets/player/player_boost_texture.png");
 
-    // Inicializa a posição central da nave na tela
-    player.player_position_X = (GetScreenWidth()  - player.player_texture.width)  * 0.5f;
+    player.player_position_X = (GetScreenWidth() - player.player_texture.width) * 0.5f;
     player.player_position_Y = (GetScreenHeight() - player.player_texture.height) * 0.5f;
 
     player.player_rotation = 0.0f;
-    player.speed          = 2.5f;
-    player.health         = 100;
+    player.speed = 2.5f;
+    player.health = 100;
 
     return player;
 }

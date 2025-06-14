@@ -1,7 +1,12 @@
 #include "raylib.h"
 #include "lib/player/player.hpp"
+#include "lib/asteroids/asteroids.hpp"
 
 #include <stdio.h>
+#include "math.h"
+
+int screen_width = 1366;
+int screen_height = 768;
 
 bool stop_app = false;
 bool pause_app = false;
