@@ -3,7 +3,8 @@
 
 #include <stdio.h>
 
-int InitializeApp(){
+int InitializeApp()
+{
     int screen_width = 1366;
     int screen_height = 768;
 
@@ -17,11 +18,13 @@ int InitializeApp(){
     AppAssets app_assets = CreateAppAssets();
     Player player = CreatePlayer();
 
-    while (!stop_app){
+    while (!stop_app)
+    {
         BeginDrawing();
         ClearBackground(RAYWHITE);
 
-        switch (current_app_state){
+        switch (current_app_state)
+        {
         case MAIN_MENU:
 
             app_timer.time = GetTime();
@@ -56,21 +59,29 @@ int InitializeApp(){
 
             if (!pause_app)
             {
-                if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) && player.player_position_Y > 0)
+                if (IsKeyDown(KEY_W) && player.player_position_Y > 0)
                 {
                     player.player_position_Y -= player.speed;
                 }
-                if ((IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) && player.player_position_Y < screen_height - player.player_texture.height)
+                if (IsKeyDown(KEY_S) && player.player_position_Y < screen_height - player.player_texture.height)
                 {
                     player.player_position_Y += player.speed;
                 }
-                if ((IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) && player.player_position_X > 0)
+                if (IsKeyDown(KEY_A) && player.player_position_X > 0)
                 {
                     player.player_position_X -= player.speed;
                 }
-                if ((IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) && player.player_position_X < screen_width - player.player_texture.width)
+                if (IsKeyDown(KEY_D) && player.player_position_X < screen_width - player.player_texture.width)
                 {
                     player.player_position_X += player.speed;
+                }
+                if (IsKeyDown(KEY_E))
+                {
+                    player.player_rotation += 0.75;
+                }
+                if (IsKeyDown(KEY_Q))
+                {
+                    player.player_rotation -= 0.75;
                 }
 
                 if (IsKeyDown(KEY_LEFT_SHIFT))
@@ -78,7 +89,9 @@ int InitializeApp(){
                     player.player_boost_texture_X = player.player_position_X + 50;
                     player.player_boost_texture_Y = player.player_position_Y + 85;
                     player.speed = 4.0;
-                }else {
+                }
+                else
+                {
                     player.speed = 2.5;
                 }
 
@@ -88,7 +101,9 @@ int InitializeApp(){
                 {
                     DrawTexture(player.player_boost_texture, player.player_boost_texture_X, player.player_boost_texture_Y, WHITE);
                 }
-            }else {
+            }
+            else
+            {
                 DrawGameplay(app_assets.gameplay_background, player);
 
                 DrawText("JOGO PAUSADO", 75, 400, 25, GOLD);

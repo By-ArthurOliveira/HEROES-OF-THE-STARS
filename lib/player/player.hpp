@@ -7,6 +7,7 @@ typedef struct Player
     Texture2D player_texture;
     float player_position_X;
     float player_position_Y;
+    float player_rotation;
     float speed;
     int health;
 
@@ -21,6 +22,7 @@ Player CreatePlayer()
     player.player_texture = LoadTexture("assets/player/player_texture.png");
     player.player_position_X = ((GetScreenWidth() / 2.0f) - (player.player_texture.width / 2.0f));
     player.player_position_Y = ((GetScreenHeight() / 2.0f) - (player.player_texture.height / 2.0f));
+    player.player_rotation = 0.0f;
     player.speed = 2.5f;
     player.health = 100;
 

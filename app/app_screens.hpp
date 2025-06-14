@@ -75,7 +75,7 @@ void DrawMainMenu(Texture2D main_menu_background, Sound switch_sound)
 void DrawGameplay(Texture2D gameplay_background, Player player)
 {
     DrawTexture(gameplay_background, 0, 0, GRAY);
-    DrawTexture(player.player_texture, player.player_position_X, player.player_position_Y, WHITE);
+    DrawTextureEx(player.player_texture, {player.player_position_X, player.player_position_Y}, player.player_rotation, 1.0, WHITE);
 }
 
 void DrawScoreboard(Texture2D main_menu_background)
