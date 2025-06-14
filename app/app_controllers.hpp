@@ -1,0 +1,27 @@
+#include "raylib.h"
+#include "lib/player/player.hpp"
+
+#include <stdio.h>
+
+bool stop_app = false;
+bool pause_app = false;
+
+enum AppState
+{
+    MAIN_MENU,
+    GAMEPLAY,
+    SCOREBOARD,
+    COMMANDS,
+    CREDITS,
+    EXIT
+};
+AppState current_app_state = MAIN_MENU;
+
+int selected_option = 1;
+
+typedef struct Timer
+{
+    float time;
+    float last_time;
+} Timer;
+Timer app_timer;
